@@ -1,0 +1,75 @@
+name: "amr_Transformer_short_800_A"
+
+data:
+    src: "src"
+    trg: "tgt"
+    train: "~/AMR_ablation/data/A_data/train/a_train"
+    dev: "~/AMR_ablation/data/A_data/dev/a_dev"
+    test: "~/AMR_ablation/data/A_data/test/a_test"
+    level: "word"
+    lowercase: False
+    max_sent_length: 800 # 100
+
+testing:
+    beam_size: 5
+    alpha: 1.0
+
+training:
+    random_seed: 42
+    optimizer: "adam"
+    adam_betas: [0.9, 0.999]
+    scheduling: "plateau"
+    loss: "crossentropy"
+    learning_rate: 0.0002
+    learning_rate_min: 0.00000001
+    learning_rate_factor: 2   # factor for Noam scheduler (default: 1)
+    learning_rate_warmup: 5000  # warmup steps for Noam scheduler
+    label_smoothing: 0.1
+    weight_decay: 0.0
+    batch_size: 8192
+    batch_type: "token"
+    epochs: 30
+    validation_freq: 1000
+    logging_freq: 100
+    eval_metric: "bleu"
+    model_dir: "models/a_model"
+    overwrite: True
+    shuffle: True
+    use_cuda: True
+    max_output_length: 100
+    print_valid_sents: [0, 1, 2]
+    keep_last_ckpts: 1
+
+model:
+    initializer: "xavier"           # initializer for all trainable weights (xavier, zeros, normal, uniform)
+    init_gain: 1.0                  # gain for Xavier initializer (default: 1.0)
+    bias_initializer: "zeros"       # initializer for bias terms (xavier, zeros, normal, uniform)
+    embed_initializer: "xavier"     # initializer for embeddings (xavier, zeros, normal, uniform)
+    embed_init_gain: 1.0            # gain for Xavier initializer for embeddings (default: 1.0)
+    tied_embeddings: False          # tie src and trg embeddings, only applicable if vocabularies are the same, default: False
+    tied_softmax: True
+    encoder:
+        type: "transformer"
+        num_layers: 4
+        num_heads: 4
+        embeddings:
+            embedding_dim: 512
+            scale: True
+            dropout: 0.
+        # typically ff_size = 4 x hidden_size
+        hidden_size: 512
+        ff_size: 2048
+        dropout: 0.1
+    decoder:
+        type: "transformer"
+        num_layers: 4
+        num_heads: 4
+        embeddings:
+            embedding_dim: 512
+            scale: True
+            dropout: 0.
+        # typically ff_size = 4 x hidden_size
+        hidden_size: 512
+        ff_size: 2048
+        dropout: 0.1
+
