@@ -74,6 +74,10 @@ Baseline results are averaged over 10 runs.
 | B-Model | 0.2478 | 0.3258| (0.7496214337800232, 8.983217705385425e-271) | 
 | C-Model | 0.2498 | 0.3618 | (0.5281452393797889, 1.630686585891851e-108) | 
 
+Bleu scores on the validation set of the Transformer models are:
+- Model A: 86,27
+- Model B: 52,39
+- Model C: 36,57
 
 
 
